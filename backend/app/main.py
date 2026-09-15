@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.api.routes.health import router as health_router
+from app.api.routes.ranking import router as ranking_router
 from app.api.routes.suitability import router as suitability_router
 from app.core.config import settings
 
@@ -25,6 +26,10 @@ app.include_router(
 
 app.include_router(
     suitability_router,
+)
+
+app.include_router(
+    ranking_router,
 )
 
 

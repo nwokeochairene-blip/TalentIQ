@@ -100,7 +100,17 @@ def rank_candidates_for_job(
 
     engine = get_inference_engine()
 
+    # The public API uses `resume_text`, while the locked
+    # production inference engine expects `resume`.
+    engine_candidates = []
+
+    for candidate in candidates:
+        engine_candidates.append({
+            "candidate_id": candidate["candidate_id"],
+            "resume": candidate["resume_text"],
+        })
+
     return engine.rank_candidates(
         job_description=job_description,
-        candidates=candidates,
+        candidates=engine_candidates,
     )
