@@ -4,6 +4,7 @@ from app.api.routes.health import router as health_router
 from app.api.routes.ranking import router as ranking_router
 from app.api.routes.suitability import router as suitability_router
 from app.api.routes.documents import router as documents_router
+from app.api.routes.resumes import router as resumes_router
 from app.core.config import settings
 
 
@@ -47,3 +48,5 @@ def root():
     }
 
 app.include_router(documents_router)
+
+app.include_router(resumes_router)
