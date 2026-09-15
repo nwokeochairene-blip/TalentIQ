@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.api.routes.health import router as health_router
 from app.api.routes.ranking import router as ranking_router
 from app.api.routes.suitability import router as suitability_router
+from app.api.routes.documents import router as documents_router
 from app.core.config import settings
 
 
@@ -44,3 +45,5 @@ def root():
         "version": settings.app_version,
         "status": "running",
     }
+
+app.include_router(documents_router)
