@@ -1,7 +1,7 @@
 import re
 from typing import List, Optional
 
-from backend.app.schemas.job_description import JobDescriptionProfile
+from app.schemas.job_description import JobDescriptionProfile
 
 
 class JobDescriptionParser:
