@@ -7,6 +7,7 @@ from app.api.routes.suitability import router as suitability_router
 from app.api.routes.documents import router as documents_router
 from app.api.routes.resumes import router as resumes_router
 from app.core.config import settings
+from app.api.routes.analysis import router as analysis_router
 
 
 app = FastAPI(
@@ -53,3 +54,5 @@ app.include_router(documents_router)
 app.include_router(resumes_router)
 
 app.include_router(job_descriptions_router)
+
+app.include_router(analysis_router)
