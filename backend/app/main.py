@@ -1,3 +1,4 @@
+from app.api.routes.job_descriptions import router as job_descriptions_router
 from fastapi import FastAPI
 
 from app.api.routes.health import router as health_router
@@ -50,3 +51,5 @@ def root():
 app.include_router(documents_router)
 
 app.include_router(resumes_router)
+
+app.include_router(job_descriptions_router)
