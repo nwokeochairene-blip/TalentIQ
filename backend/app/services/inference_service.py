@@ -7,15 +7,9 @@ import sys
 # Locate the verified production inference module
 # ------------------------------------------------------------
 
-PROJECT_ROOT = Path(
-    "/content/drive/MyDrive/TalentIQ"
-)
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
-INFERENCE_DIR = (
-    PROJECT_ROOT
-    / "artifacts"
-    / "inference_package"
-)
+INFERENCE_DIR = PROJECT_ROOT / "inference_package"
 
 if not INFERENCE_DIR.exists():
     raise RuntimeError(
@@ -41,7 +35,9 @@ def get_inference_engine() -> TalentIQInference:
     The cached engine prevents model artifacts from being
     reloaded for every API request.
     """
-    return TalentIQInference()
+    return TalentIQInference(
+    model_root=INFERENCE_DIR / "talentiq_artifacts"
+)
 
 
 # ------------------------------------------------------------

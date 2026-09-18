@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -25,9 +26,7 @@ router = APIRouter(
 async def extract_document(
     file: UploadFile = File(...),
 ) -> DocumentExtractionResponse:
-    """
-    Extract text from a PDF or DOCX resume/document.
-    """
+    """Extract text from a PDF or DOCX resume/document."""
 
     if not file.filename:
         raise HTTPException(
@@ -46,6 +45,8 @@ async def extract_document(
             ),
         )
 
+    temp_path = None
+
     try:
         content = await file.read()
 
@@ -55,21 +56,19 @@ async def extract_document(
                 detail="Uploaded file is empty.",
             )
 
-        with NamedTemporaryFile(
+        temp_file = NamedTemporaryFile(
             suffix=extension,
-            delete=True,
-        ) as temp_file:
-
-            temp_file.write(content)
-            temp_file.flush()
-
-            extracted_text = extract_text(
-                temp_file.name
-            )
-
-        normalized_text = normalize_extracted_text(
-            extracted_text
+            delete=False,
         )
+        temp_path = temp_file.name
+
+        try:
+            temp_file.write(content)
+        finally:
+            temp_file.close()
+
+        extracted_text = extract_text(temp_path)
+        normalized_text = normalize_extracted_text(extracted_text)
 
         return DocumentExtractionResponse(
             filename=file.filename,
@@ -93,3 +92,7 @@ async def extract_document(
             status_code=500,
             detail="Document extraction failed.",
         ) from exc
+
+    finally:
+        if temp_path and os.path.exists(temp_path):
+            os.unlink(temp_path)
